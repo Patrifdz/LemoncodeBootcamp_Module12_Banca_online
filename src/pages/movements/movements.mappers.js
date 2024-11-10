@@ -11,6 +11,7 @@ const mapMovementsFromApiToVm = movements => {
         description: movements.description,
         amount: `${movements.amount} €`,
         balance: `${movements.balance} €`,
+        accountId: movements.accountId,
         }  
 }
 

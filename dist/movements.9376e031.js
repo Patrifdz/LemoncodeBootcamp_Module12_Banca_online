@@ -135,7 +135,8 @@ var mapMovementsFromApiToVm = function mapMovementsFromApiToVm(movements) {
     realTransaction: new Date(movements.realTransaction).toLocaleDateString(),
     description: movements.description,
     amount: "".concat(movements.amount, " \u20AC"),
-    balance: "".concat(movements.balance, " \u20AC")
+    balance: "".concat(movements.balance, " \u20AC"),
+    accountId: movements.accountId
   };
 };
 },{}],"../node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
@@ -4172,9 +4173,13 @@ var _movements3 = require("./movements.helpers");
 var _router = require("../../core/router");
 // import {mapAccountListApiToVm} from '../account-list/account-list.mappers';
 
+var params = _router.history.getParams();
 (0, _movements2.getMovementsList)().then(function (movementsList) {
   var vmMovementsList = (0, _movements.mapMovementsListFromApitoVm)(movementsList);
-  (0, _movements3.addMovementRows)(vmMovementsList);
+  var accountIdMovementList = vmMovementsList.filter(function (list) {
+    return list.accountId === params.id;
+  });
+  (0, _movements3.addMovementRows)(accountIdMovementList);
 });
 },{"./movements.mappers":"pages/movements/movements.mappers.js","./movements.api":"pages/movements/movements.api.js","./movements.helpers":"pages/movements/movements.helpers.js","../../core/router":"core/router/index.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];

@@ -2,13 +2,14 @@
 import {mapMovementsListFromApitoVm} from './movements.mappers';
 import {getMovementsList} from './movements.api';
 import {addMovementRows} from './movements.helpers';
-import { routes } from '../../core/router';
+import { history } from '../../core/router';
 
-
+const params = history.getParams();
 
 getMovementsList().then( movementsList => {
     const vmMovementsList = mapMovementsListFromApitoVm(movementsList);
-    addMovementRows(vmMovementsList)
+    const accountIdMovementList = vmMovementsList.filter( list => list.accountId === params.id);
+    addMovementRows(accountIdMovementList)
 })
 
 
