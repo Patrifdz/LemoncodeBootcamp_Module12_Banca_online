@@ -1885,6 +1885,22 @@ var getMovementsList = exports.getMovementsList = function getMovementsList() {
     return data;
   });
 };
+},{"axios":"../node_modules/axios/index.js"}],"pages/account-list/account-list.api.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getAccountList = void 0;
+var _axios = _interopRequireDefault(require("axios"));
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+var url = "".concat("http://localhost:3000/api", "/account-list");
+var getAccountList = exports.getAccountList = function getAccountList() {
+  return _axios.default.get(url).then(function (_ref) {
+    var data = _ref.data;
+    return data;
+  });
+};
 },{"axios":"../node_modules/axios/index.js"}],"pages/movements/movements.helpers.js":[function(require,module,exports) {
 "use strict";
 
@@ -4164,24 +4180,158 @@ Object.keys(_history).forEach(function (key) {
     }
   });
 });
-},{"./routes":"core/router/routes.js","./history":"core/router/history.js"}],"pages/movements/movements.js":[function(require,module,exports) {
+},{"./routes":"core/router/routes.js","./history":"core/router/history.js"}],"common/helpers/element.helpers.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.onUpdateField = exports.onSubmitForm = exports.onSetValues = exports.onSetFormErrors = exports.onSetError = void 0;
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+// Recoge el valor del id que le pasemos por parámetro y realiza la función callback que le pasemos como el otro parámetro.
+var onUpdateField = exports.onUpdateField = function onUpdateField(id, callback) {
+  var element = document.getElementById(id);
+  element.oninput = function (event) {
+    return callback(event);
+  };
+  if (element.type !== 'checkbox') {
+    element.onblur = function (event) {
+      return callback(event);
+    };
+  }
+};
+
+// Función a la que le pasamos el id con el que queramos lanzar una función cuando el usuario interactue con el mismo. Por ejemplo, el botón enviar del formulario de la página login. El callback que le pasaremos en ese caso será la función encargada de validar que los campos estén cumplimentados. 
+var onSubmitForm = exports.onSubmitForm = function onSubmitForm(id, callback) {
+  var element = document.getElementById(id);
+  element.onclick = function (e) {
+    e.preventDefault();
+    callback();
+  };
+};
+
+// Función encargada de pintar el error de validación en el html para informar al usuario. 
+var onSetError = exports.onSetError = function onSetError(id, error) {
+  if (error.succeeded) {
+    removeElementClass(id);
+    setErrorMessage(id, '');
+  } else {
+    setElementClass(id);
+    setErrorMessage(id, error.message);
+  }
+};
+var setElementClass = function setElementClass(id) {
+  var element = document.getElementById(id);
+  if (element) {
+    element.classList.add('error');
+  }
+};
+var removeElementClass = function removeElementClass(id) {
+  var element = document.getElementById(id);
+  if (element) {
+    element.classList.remove('error');
+  }
+};
+var setErrorMessage = function setErrorMessage(id, message) {
+  var messageElement = document.getElementById("".concat(id, "-error"));
+  if (messageElement) {
+    messageElement.textContent = message;
+  }
+};
+var onSetFormErrors = exports.onSetFormErrors = function onSetFormErrors(_ref) {
+  var fieldErrors = _ref.fieldErrors;
+  Object.entries(fieldErrors).forEach(function (_ref2) {
+    var _ref3 = _slicedToArray(_ref2, 2),
+      key = _ref3[0],
+      value = _ref3[1];
+    onSetError(key, value);
+  });
+};
+var setValue = function setValue(element, value) {
+  var elementType = element.tagName.toLowerCase();
+  if (elementType === 'select' || elementType === 'input') {
+    element.value = value;
+  } else {
+    element.textContent = value;
+  }
+};
+var onSetValue = function onSetValue(id, value) {
+  var element = document.getElementById(id);
+  console.log({
+    element: element
+  });
+  if (element) {
+    setValue(element, value);
+  }
+};
+var onSetValues = exports.onSetValues = function onSetValues(values) {
+  Object.entries(values).forEach(function (_ref4) {
+    var _ref5 = _slicedToArray(_ref4, 2),
+      key = _ref5[0],
+      value = _ref5[1];
+    return onSetValue(key, value);
+  });
+};
+},{}],"common/helpers/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _element = require("./element.helpers");
+Object.keys(_element).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _element[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _element[key];
+    }
+  });
+});
+},{"./element.helpers":"common/helpers/element.helpers.js"}],"pages/movements/movements.js":[function(require,module,exports) {
 "use strict";
 
 var _movements = require("./movements.mappers");
 var _movements2 = require("./movements.api");
+var _accountList = require("../account-list/account-list.api");
 var _movements3 = require("./movements.helpers");
 var _router = require("../../core/router");
+var _helpers = require("../../common/helpers");
 // import {mapAccountListApiToVm} from '../account-list/account-list.mappers';
 
-var params = _router.history.getParams();
+var paramsUrl = _router.history.getParams();
 (0, _movements2.getMovementsList)().then(function (movementsList) {
   var vmMovementsList = (0, _movements.mapMovementsListFromApitoVm)(movementsList);
   var accountIdMovementList = vmMovementsList.filter(function (list) {
-    return list.accountId === params.id;
+    return list.accountId === paramsUrl.id;
   });
-  (0, _movements3.addMovementRows)(accountIdMovementList);
+  if (accountIdMovementList.length > 0) {
+    (0, _movements3.addMovementRows)(accountIdMovementList);
+  } else {
+    (0, _movements3.addMovementRows)(vmMovementsList);
+  }
 });
-},{"./movements.mappers":"pages/movements/movements.mappers.js","./movements.api":"pages/movements/movements.api.js","./movements.helpers":"pages/movements/movements.helpers.js","../../core/router":"core/router/index.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+(0, _accountList.getAccountList)().then(function (accountsList) {
+  var accountSelected = accountsList.find(function (account) {
+    return account.id === paramsUrl.id;
+  });
+  var alias = accountSelected.alias,
+    balance = accountSelected.balance,
+    iban = accountSelected.iban;
+  var accountValidDates = {
+    alias: alias,
+    balance: balance,
+    iban: iban
+  };
+  (0, _helpers.onSetValues)(accountValidDates);
+});
+},{"./movements.mappers":"pages/movements/movements.mappers.js","./movements.api":"pages/movements/movements.api.js","../account-list/account-list.api":"pages/account-list/account-list.api.js","./movements.helpers":"pages/movements/movements.helpers.js","../../core/router":"core/router/index.js","../../common/helpers":"common/helpers/index.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -4206,7 +4356,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59869" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51979" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
