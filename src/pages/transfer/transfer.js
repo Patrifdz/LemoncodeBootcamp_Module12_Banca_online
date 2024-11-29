@@ -43,17 +43,18 @@ fieldId.forEach(field => {
             ...transfer,
             [field]: value,
           };
-        // Actualización del campo fecha y validación
+        // Actualización del campo fecha
         if (field === "day" | field === "month" | field === "year"){
             transfer = {
               ...transfer,        
               date: `${transfer.year}/${transfer.month}/${transfer.day}`,
           }
+        // Validación del campo fecha
         formValidation.validateField('date', transfer.date)
         .then((result) => onSetError("date", result));
         } 
 
-        // Validación de los campos actualizados
+        // Validación del resto de campos actualizados
         formValidation.validateField(field, value
         ).then(result => {
             onSetError(field, result);
@@ -67,8 +68,11 @@ onSubmitForm('transfer-button', () => {
         onSetFormErrors(result); // Maneja los errores en el formulario
 
         if (result.succeeded) {
+            // Añade en data.json, en transfer, la transferencia realizada con todos los datos obtenidos del formulario
             sendDataTransfer(transfer).then(() => {
+            // Navega a la pantalla de Mis cuentas
                 { history.push(routes.accountList) };
+            // Muestra alert para indicar que la transferencia se ha realizado
                 alert('Transferencia realizada con éxito');
             });
         };

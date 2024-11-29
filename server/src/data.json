@@ -146,6 +146,19 @@
       "month": "11",
       "year": "2024",
       "id": 2
+    },
+    {
+      "iban": "ES66 2100 0418 4012 3456 7891",
+      "name": "Patricia Fdez",
+      "amount": "0.50",
+      "concept": "CLASES TOM Y HOSTAL",
+      "notes": "ninugna",
+      "date": "2024/11/30",
+      "email": "fdzpatri@gmail.com",
+      "day": "30",
+      "month": "11",
+      "year": "2024",
+      "id": 3
     }
   ]
 }
