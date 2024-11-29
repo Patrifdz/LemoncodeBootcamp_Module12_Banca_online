@@ -33,30 +33,6 @@ const validationSchema = {
         ],
         concept: commonValidation,
         notes: commonValidation,
-        day: [
-                ...commonValidation,
-                {
-                    validator: Validators.pattern,
-                    customArgs: { pattern: /^([1-9]|[1-2]\d|3[01])$/ },
-                    message: 'Día no válido',
-                  },
-        ],
-        month: [
-                ...commonValidation,
-                {
-                    validator: Validators.pattern,
-                    customArgs: { pattern: /^([1-9]|1[012])$/ },
-                    message: 'Mes no válido',
-                  },
-        ],
-        year: [
-                ...commonValidation,
-                {
-                    validator: Validators.pattern,
-                    customArgs: { pattern: /^2[0-9][2-9][3-9]$/ },
-                    message: 'Año no válido',
-                  },
-        ],
         date: [
                 ...commonValidation,
                 {
